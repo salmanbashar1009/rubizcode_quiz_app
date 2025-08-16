@@ -1,0 +1,141 @@
+{
+  "categories": [
+    {
+      "name": "Math",
+      "questions": [
+        {
+          "id": "math_1",
+          "question": "What is \\(2 + 2\\)?",
+          "options": ["4", "5", "6", "3"],
+          "correct": 0,
+          "difficulty": "easy"
+        },
+        {
+          "id": "math_2",
+          "question": "What is \\(\\sqrt{16}\\)?",
+          "options": ["2", "4", "8", "16"],
+          "correct": 1,
+          "difficulty": "easy"
+        },
+        {
+          "id": "math_3",
+          "question": "Solve for \\(x\\): \\(2x + 3 = 7\\)",
+          "options": ["1", "2", "3", "4"],
+          "correct": 1,
+          "difficulty": "medium"
+        },
+        {
+          "id": "math_4",
+          "question": "What is \\(\\int_0^1 x^2 \\, dx\\)?",
+          "options": ["\\(\\frac{1}{3}\\)", "\\(\\frac{1}{2}\\)", "1", "2"],
+          "correct": 0,
+          "difficulty": "hard"
+        }
+      ]
+    },
+    {
+      "name": "Science",
+      "questions": [
+        {
+          "id": "science_1",
+          "question": "What is the chemical formula for water?",
+          "options": ["H\\(_2\\)O", "O\\(_2\\)", "H\\(_2\\)", "CO\\(_2\\)"],
+          "correct": 0,
+          "difficulty": "easy"
+        },
+        {
+          "id": "science_2",
+          "question": "What is the atomic number of Carbon?",
+          "options": ["6", "8", "12", "14"],
+          "correct": 0,
+          "difficulty": "medium"
+        },
+        {
+          "id": "science_3",
+          "question": "What is the formula for Newton’s Second Law?",
+          "options": ["\\(F = ma\\)", "\\(E = mc^2\\)", "\\(v = at\\)", "\\(p = mv\\)"],
+          "correct": 0,
+          "difficulty": "medium"
+        }
+      ]
+    },
+    {
+      "name": "History",
+      "questions": [
+        {
+          "id": "history_1",
+          "question": "Who was the first President of the United States?",
+          "options": ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"],
+          "correct": 0,
+          "difficulty": "easy"
+        },
+        {
+          "id": "history_2",
+          "question": "In which year did World War II end?",
+          "options": ["1943", "1944", "1945", "1946"],
+          "correct": 2,
+          "difficulty": "medium"
+        },
+        {
+          "id": "history_3",
+          "question": "Which ancient civilization built the Pyramids of Giza?",
+          "options": ["Roman", "Greek", "Egyptian", "Mayan"],
+          "correct": 2,
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "name": "Geography",
+      "questions": [
+        {
+          "id": "geography_1",
+          "question": "What is the capital of France?",
+          "options": ["Paris", "London", "Berlin", "Madrid"],
+          "correct": 0,
+          "difficulty": "easy"
+        },
+        {
+          "id": "geography_2",
+          "question": "Which river is the longest in the world?",
+          "options": ["Amazon", "Nile", "Yangtze", "Mississippi"],
+          "correct": 1,
+          "difficulty": "medium"
+        },
+        {
+          "id": "geography_3",
+          "question": "On which continent is the Sahara Desert located?",
+          "options": ["Asia", "Africa", "Australia", "South America"],
+          "correct": 1,
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "name": "General Knowledge",
+      "questions": [
+        {
+          "id": "gk_1",
+          "question": "What is the largest planet in our Solar System?",
+          "options": ["Earth", "Mars", "Jupiter", "Saturn"],
+          "correct": 2,
+          "difficulty": "easy"
+        },
+        {
+          "id": "gk_2",
+          "question": "Which element is represented by the symbol \\(Au\\)?",
+          "options": ["Silver", "Gold", "Iron", "Aluminum"],
+          "correct": 1,
+          "difficulty": "medium"
+        },
+        {
+          "id": "gk_3",
+          "question": "What is the primary source of energy for Earth’s climate system?",
+          "options": ["Moon", "Sun", "Wind", "Oceans"],
+          "correct": 1,
+          "difficulty": "easy"
+        }
+      ]
+    }
+  ]
+}
