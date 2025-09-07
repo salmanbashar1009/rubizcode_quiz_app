@@ -8,46 +8,65 @@ import 'results_screen.dart';
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});
 
-  // Extract LaTeX content from a string (e.g., "What is \\(2 + 2\\)?" -> "2 + 2")
-  String? _extractLaTeX(String text) {
-    final RegExp latexRegExp = RegExp(r'\\\(.*?(?<=\\)\)|\[.*?(?<=\\])');
-    final match = latexRegExp.firstMatch(text);
-    if (match != null) {
-      final latex = match.group(0);
-      if (latex != null) {
-        return latex.substring(2, latex.length - 2); // Remove \\( and \\)
-      }
-    }
-    return null;
-  }
+  /// Build question (supports text + LaTeX + optional text_after)
+  Widget _buildQuestion(Map<String, dynamic> question) {
+    final text = question['text'] ?? '';
+    final latex = question['latex'] ?? '';
+    final textAfter = question['text_after'] ?? '';
 
-  // Split text and LaTeX for rendering
-  Widget _buildMixedContent(String text) {
-    final latex = _extractLaTeX(text);
-    if (latex == null) {
-      return Text(
-        text.isEmpty ? 'Invalid question' : text,
-        style: const TextStyle(fontSize: 16),
-        textAlign: TextAlign.center,
-      );
-    }
-    final plainText = text.replaceAll(RegExp(r'\\\(.*?(?<=\\)\)|\[.*?(?<=\\])'), '');
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (plainText.isNotEmpty)
+        if (text.isNotEmpty)
           Text(
-            plainText,
+            text,
             style: const TextStyle(fontSize: 16),
           ),
-        Math.tex(
-          latex,
-          textStyle: const TextStyle(fontSize: 16),
-          onErrorFallback: (e) {
-            debugPrint('Math.tex error (question): $e');
-            return Text(latex, style: const TextStyle(fontSize: 16));
-          },
-        ),
+        if (latex.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Math.tex(
+              latex,
+              textStyle: const TextStyle(fontSize: 16),
+              onErrorFallback: (e) {
+                debugPrint('Math.tex error (question): $e');
+                return Text(latex, style: const TextStyle(fontSize: 16));
+              },
+            ),
+          ),
+        if (textAfter.isNotEmpty)
+          Text(
+            textAfter,
+            style: const TextStyle(fontSize: 16),
+          ),
+      ],
+    );
+  }
+
+  /// Build option (supports text + LaTeX)
+  Widget _buildOption(Map<String, dynamic> option) {
+    final String text = option['text'] ?? '';
+    final String latex = option['latex'] ?? '';
+
+    return Row(
+      children: [
+        if (text.isNotEmpty)
+          Text(
+            text,
+            style: const TextStyle(fontSize: 16),
+          ),
+        if (latex.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(left: 4),
+            child: Math.tex(
+              latex,
+              textStyle: const TextStyle(fontSize: 16),
+              onErrorFallback: (e) {
+                debugPrint('Math.tex error (option): $e');
+                return Text(latex, style: const TextStyle(fontSize: 16));
+              },
+            ),
+          ),
       ],
     );
   }
@@ -62,6 +81,7 @@ class QuizScreen extends StatelessWidget {
             debugPrint('No questions available in provider');
             return const Center(child: Text('No questions available'));
           }
+
           if (provider.currentQuestionIndex >= provider.questions.length) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               Navigator.pushReplacement(
@@ -76,9 +96,10 @@ class QuizScreen extends StatelessWidget {
             });
             return const SizedBox();
           }
+
           final question = provider.questions[provider.currentQuestionIndex];
-          debugPrint('Rendering question: ${question['question']}');
-          debugPrint('Options: ${question['options']}');
+          debugPrint('Rendering question: $question');
+
           return AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -89,7 +110,8 @@ class QuizScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 LinearProgressIndicator(
-                  value: (provider.currentQuestionIndex + 1) / provider.questions.length,
+                  value: (provider.currentQuestionIndex + 1) /
+                      provider.questions.length,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -112,32 +134,45 @@ class QuizScreen extends StatelessWidget {
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
-                    child: Center(
-                      child: _buildMixedContent(question['question'] ?? 'Invalid question'),
-                    ),
+                    child: Center(child: _buildQuestion(question)),
                   ),
                 ),
                 // Options rendering
                 Expanded(
                   flex: 2,
-                  child: ListView(
-                    children: List.generate(4, (i) {
-                      final option = question['options']?[i] ?? 'Invalid option';
+                  child: ListView.builder(
+                    itemCount: (question['options'] as List).length,
+                    itemBuilder: (context, i) {
+                      final option =
+                      question['options']?[i] as Map<String, dynamic>?;
+
+                      if (option == null) {
+                        return const ListTile(
+                          title: Text('Invalid option'),
+                        );
+                      }
+
                       return ListTile(
-                        title: _buildMixedContent(option),
-                        tileColor: provider.selectedAnswers[provider.currentQuestionIndex] == i
-                            ? Colors.green.withOpacity(0.3)
+                        title: _buildOption(option),
+                        tileColor: provider.selectedAnswers[
+                        provider.currentQuestionIndex] ==
+                            i
+                            ? Colors.green.withAlpha(100)
                             : null,
-                        onTap: provider.answerLocked ? null : () => provider.selectAnswer(i),
+                        onTap: provider.answerLocked
+                            ? null
+                            : () => provider.selectAnswer(i),
                       );
-                    }),
+                    },
                   ),
                 ),
                 if (provider.answerLocked)
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: provider.currentQuestionIndex < provider.questions.length - 1
+                      onPressed:
+                      provider.currentQuestionIndex <
+                          provider.questions.length - 1
                           ? provider.nextQuestion
                           : () {
                         Navigator.pushReplacement(
