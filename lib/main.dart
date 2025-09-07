@@ -1,6 +1,5 @@
 // lib/main.dart
 import 'package:flutter/material.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:rubizcode_quiz_app/providers/quiz_provider.dart';
@@ -13,7 +12,6 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(ScoreAdapter());
   await Hive.openBox('leaderboard');
-  await TeXRenderingServer.start();
   runApp(const MyApp());
 }
 
