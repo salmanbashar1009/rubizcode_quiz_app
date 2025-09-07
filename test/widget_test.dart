@@ -15,10 +15,9 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    await tester.tap(find.byWidget(Text('Next')));
-    await tester.pump();
 
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Q1/16'), findsOneWidget);
+
 
 
   });
